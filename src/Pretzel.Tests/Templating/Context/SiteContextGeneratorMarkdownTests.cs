@@ -29,7 +29,7 @@ namespace Pretzel.Tests.Templating.Context
 
             fileSystem.AddFile(@"C:\TestSite\_posts\2012-01-01-SomeFile.md", new MockFileData(input));
 
-            var siteContext = generator.BuildContext(@"C:\TestSite");
+            var siteContext = generator.BuildContext(@"C:\TestSite", false);
 
             Assert.Equal(expected, siteContext.Posts[0].Content.Trim());
         }
@@ -42,7 +42,7 @@ namespace Pretzel.Tests.Templating.Context
 
             fileSystem.AddFile(@"C:\TestSite\_posts\2012-01-01-SomeFile.md", new MockFileData(input));
 
-            var siteContext = generator.BuildContext(@"C:\TestSite");
+            var siteContext = generator.BuildContext(@"C:\TestSite", false);
 
             Assert.Equal(expected, siteContext.Posts[0].Content.Trim());
         }       

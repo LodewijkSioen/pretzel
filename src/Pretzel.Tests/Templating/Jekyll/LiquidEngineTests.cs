@@ -501,7 +501,7 @@ namespace Pretzel.Tests.Templating.Jekyll
                 FileSystem.AddFile(@"C:\website\index.md", new MockFileData(PageContents));
 
                 var generator = new SiteContextGenerator(FileSystem, Enumerable.Empty<IContentTransform>());
-                var context = generator.BuildContext(@"C:\website\");
+                var context = generator.BuildContext(@"C:\website\", false);
                 context.Config.Add("pygments", "true");
                 Subject.FileSystem = FileSystem;
                 Subject.Process(context);
@@ -533,7 +533,7 @@ namespace Pretzel.Tests.Templating.Jekyll
                 FileSystem.AddFile(@"C:\website\index.md", new MockFileData(PageContents));
 
                 var generator = new SiteContextGenerator(FileSystem, Enumerable.Empty<IContentTransform>());
-                var context = generator.BuildContext(@"C:\website\");
+                var context = generator.BuildContext(@"C:\website\", false);
                 context.Config.Add("pygments", "true");
                 Subject.FileSystem = FileSystem;
                 Subject.Process(context);
@@ -565,7 +565,7 @@ namespace Pretzel.Tests.Templating.Jekyll
                 FileSystem.AddFile(@"C:\website\index.md", new MockFileData(PageContents));
 
                 var generator = new SiteContextGenerator(FileSystem, Enumerable.Empty<IContentTransform>());
-                var context = generator.BuildContext(@"C:\website\");
+                var context = generator.BuildContext(@"C:\website\", false);
                 Subject.FileSystem = FileSystem;
                 Subject.Process(context);
             }
