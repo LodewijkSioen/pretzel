@@ -41,7 +41,7 @@ namespace Pretzel.Logic.Templating.Context
             };
         }
 
-        public SiteContext BuildContext(string path)
+        public SiteContext BuildContext(string path, bool includeDrafts)
         {
             try
             {
@@ -61,6 +61,7 @@ namespace Pretzel.Logic.Templating.Context
                     Pages = new List<Page>(),
                     Config = config,
                     Time = DateTime.Now,
+                    UseDrafts = includeDrafts
                 };
 
                 context.Posts = BuildPosts(config, context).OrderByDescending(p => p.Date).ToList();
@@ -105,16 +106,30 @@ namespace Pretzel.Logic.Templating.Context
 
         private IEnumerable<Page> BuildPosts(Dictionary<string, object> config, SiteContext context)
         {
+            var posts = new List<Page>();
+
             var postsFolder = Path.Combine(context.SourceFolder, "_posts");
             if (fileSystem.Directory.Exists(postsFolder))
             {
-                return fileSystem.Directory
+                posts.AddRange(fileSystem.Directory
                     .GetFiles(postsFolder, "*.*", SearchOption.AllDirectories)
                     .Select(file => CreatePage(context, config, file, true))
-                    .Where(post => post != null);
+                    .Where(post => post != null)
+                );
             }
 
-            return Enumerable.Empty<Page>();
+            var draftsFolder = Path.Combine(context.SourceFolder, "_drafts");
+            if (context.UseDrafts && fileSystem.Directory.Exists(draftsFolder))
+            {
+                posts.AddRange(fileSystem.Directory
+                    .GetFiles(draftsFolder, "*.*", SearchOption.AllDirectories)
+                    .Select(file => CreatePage(context, config, file, true))
+                    .Where(post => post != null)
+                );
+            }
+
+
+            return posts;
         }
 
         private static void BuildTagsAndCategories(SiteContext context)
